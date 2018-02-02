@@ -23,6 +23,9 @@ app.set('views', __dirname + '/views');
 //加载静态
 app.use(express.static(path.dirname(__dirname) + '/static'));
 
+//加载控制器
+require('./lib/boot')(app, { verbose: !module.parent });
+
 //异常捕获
 process.on('uncaughtException', function (err) {
     console.log(err);
