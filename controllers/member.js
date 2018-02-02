@@ -1,4 +1,6 @@
 var member_biz = require('../service/member');
+var sessionFilter = require('../filters/session-filter');
+//exports.before = [sessionFilter.getUser];
 
 exports.views = {
     'register': function (req, res, next) {
@@ -24,12 +26,19 @@ exports.views = {
 exports.login = function (req, res, next) {
     var mobile = req.param('mobile');
     var pwd = req.param('pwd');
-    
+    member_biz.login(mobile, pwd, function (err, user) {
+        if(!err) {
+            req.session['uid'] = user.id;
+            res.json({});
+        } else {
+            res.json({err: err});
+        }
+    });
 }
 
 /**
  * 注册
  */
 exports.register = function (req, res, next) {
-
+    
 }

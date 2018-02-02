@@ -16,6 +16,9 @@ app.use(bodyParser.json());
 
 console.log(com.env.mongo_conn);
 
+//加载数据集合
+require('./global/db');
+
 //加载视图
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');

@@ -5,7 +5,7 @@
     this.com = this.com || {};
     com.env = {
         mongo_conn_counts: 1,
-        mongo_conn: 'mongodb://192.168.1.208:27019/pet',
+        mongo_conn: 'mongodb://localhost:27017/pet',
         hostname: 'http://localhost:3000'
     }
 })();
