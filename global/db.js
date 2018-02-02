@@ -16,6 +16,7 @@
     }
 
     var _extend_db = {
+        counters: 'counters',
         user: 'user', //用户信息集合
         message: 'message', //短信信息集合
         information: 'information', //发布信息集合
@@ -23,7 +24,7 @@
         area: 'area', //区县信息集合
         part: 'part', //区域信息集合
         type: 'type', //种类信息集合
-        tag: 'tag' //标签信息集合
+        tag: 'tag', //标签信息集合
     };
 
     $.extend(com.db, _extend_db);
@@ -46,13 +47,7 @@
         for (var i = 0; i < methods.length; i++) {
             (function (i, key, model, collName) {
                 com.db[key][methods[i]] = function (query, cb) {
-                    var _query = {};
-                    if (com.biz.models[model] && com.webName!='admin') {
-                        var obj = new com.biz.models[model](query);
-                        for (key in query) {
-                            _query[key] = obj[key];
-                        }
-                    } else _query = query;
+                    var _query = query;
                     var _db = dbs[parseInt(Math.random() * conn_counts)];
                     var _coll = _db.collection(collName);
                     return _coll[methods[i]].call(_coll, _query, cb);

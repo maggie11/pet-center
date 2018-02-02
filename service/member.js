@@ -1,18 +1,127 @@
 var md5 = require('MD5');
+var async = require('async');
 
-exports.login = function (mobile, pwd, callback) {
-    mobile = mobile ? (mobile.replace(/^\+*86(\d{11})$/, "$1")) : '';
-    if (!mobile.match(/^\d{11}$/))
-        callback('手机号输入错误', null);
+/**
+ * 账号登录
+ * @param {*} mail 
+ * @param {*} pwd 
+ * @param {*} callback 
+ */
+exports.login = function (mail, pwd, callback) {
+    mail = mail ? mail : '';
+    if (!mail.match(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/))
+        callback('邮箱输入错误', null);
     else if (!pwd || pwd.length < 6) 
         callback('密码格式不正确', null);
     else {
-        pwd = md5(pwd + mobile).substring(10, 25);
-        com.db.user.findOne({mobile: mobile, pwd: pwd}, function (err, user) {
-            if (!err && user)
-                callback(null, user);
-            else 
+        pwd = md5(pwd + mail).substring(10, 30);
+        com.db.user.findOne({mail: mail, pwd: pwd}, function (err, user) {
+            if (!err && user) {
+                if(user.state == -1) {
+                    callback('账号还未激活', null);
+                } else {
+                    callback(null, user);
+                }
+            } else 
                 callback(err || '账号或密码错误', null);
         })
     }
+}
+
+/**
+ * 账号注册
+ * @param {*} user 
+ * @param {*} callback 
+ */
+exports.register = function (user, callback) {
+    async.waterfall([
+        function (next) {
+            if(user && user.mail && user.pwd) {
+                next(null);
+            } else {
+                next('数据错误');
+            }
+        },
+        function (next) {
+            if(!(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/).test(user.mail))
+                next('邮箱输入错误');
+            else if (user.pwd.length < 6 || !(/^[0-9A-Za-z_-]+$/).test(user.pwd))
+                next('登录密码格式不正确');
+            else 
+                next(null);
+        },
+        function (next) {
+            _validateMail(user.mail, function (err, result) {
+                if(!result) 
+                    next(null)
+                else 
+                    next('邮箱已经注册');
+            });
+        },
+        function (next) {
+            user.pwd = md5(user.pwd + user.mail).substring(10, 30);
+            getNextSequenceValue("userid", function (err, id) {
+                console.log(err, id);
+                if(err)
+                    next(err);
+                else {
+                    user.id = id;
+                    user.regdate = new Date();
+                    user.state = -1;
+                    next(null);
+                }
+            });
+        }
+    ], function (err, result) {
+        if(err) {
+            callback(err, null);
+        } else {
+            com.db.user.save(user, function (err, row) {
+                if(!err && row) {
+                    callback(null, row);
+                } else {
+                    callback(err || '注册失败', null);
+                }
+            })
+        }
+    });
+}
+
+/**
+ * 发送激活邮件
+ * @param {*} mail 
+ * @param {*} callback 
+ */
+exports.sendEmailToValidate = function (mail, callback) {
+    
+}
+
+/**
+ * 验证邮箱号 
+ * @param {*} mail 
+ * @param {*} callback true 存在 false 不存在
+ */
+function _validateMail (mail, callback) {
+    com.db.user.findOne({mail: mail}, function (err, user) {
+        callback(err, user ? true : false);
+    });
+}
+
+/**
+ * 获取下一个递增id
+ * @param {*} sequenceName 
+ * @param {*} cb 
+ */
+function getNextSequenceValue(sequenceName, callback){
+    com.db.counters.findAndModify({
+        query:{_id: sequenceName },
+        update: {$inc:{seq:1}},
+        new:true
+    }, function (err, row) {
+        if(!err && row) {
+            callback(null, row.seq);
+        } else {
+            callback(err || '生成编号出错', null);
+        }
+    });
 }
