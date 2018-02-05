@@ -113,7 +113,8 @@ exports.register = function (user, callback) {
  * @param {*} callback 
  */
 exports.sendEmailToValidate = function (mail, callback) {
-    
+    req.session["code"] = 1000;
+    callback(null);
 }
 
 exports.reset = function (user, callback) {
@@ -144,8 +145,10 @@ exports.reset = function (user, callback) {
         function (next) {
             var code_in_session = req.session("code");
             if(user.code === code_in_session) {
+                delete request.session("code");
                 next(null);
             } else {
+                delete request.session("code");
                 next('验证码错误');
             }
         }, 

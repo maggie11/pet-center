@@ -15,7 +15,7 @@ exports.views = {
         }
     },
     'reset': function (req, res, next) {
-
+        res.render('reset');
     },
     'logout': function (req, res, next) {
         req.session.destroy();
@@ -79,5 +79,5 @@ exports.reset = function (req, res, next) {
  * 发送验证码邮件
  */
 exports.sendEmailToValidate = function (req, res, next) {
-    
+
 }
