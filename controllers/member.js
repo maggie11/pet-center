@@ -46,10 +46,20 @@ exports.register = function (req, res, next) {
     var mail = req.param('mail');
     var pwd = req.param('pwd');
     var pwd2 = req.param('pwd2');
+    var name = req.param('name');
     var user = {};
     user.mail = mail;
     user.pwd = pwd;
+    user.pwd2 = pwd2;
+    user.name = name;
     member_biz.register(user, function (err, user) {
         res.json({err: err});
     });
+}
+
+/**
+ * 重置密码
+ */
+exports.reset = function (req, res, next) {
+
 }

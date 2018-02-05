@@ -36,8 +36,12 @@ exports.login = function (mail, pwd, callback) {
 exports.register = function (user, callback) {
     async.waterfall([
         function (next) {
-            if(user && user.mail && user.pwd) {
-                next(null);
+            if(user && user.mail && user.pwd && user.pwd2 && user.name) {
+                if(user.pwd === user.pwd2) {
+                    next(null);
+                } else {
+                    next('两次密码输入不一致');
+                }
             } else {
                 next('数据错误');
             }
@@ -52,10 +56,26 @@ exports.register = function (user, callback) {
         },
         function (next) {
             _validateMail(user.mail, function (err, result) {
-                if(!result) 
-                    next(null)
-                else 
-                    next('邮箱已经注册');
+                if(err) {
+                    next(err);
+                } else {
+                    if(!result) 
+                        next(null)
+                    else 
+                        next('邮箱已经注册');
+                }
+            });
+        },
+        function (next) {
+            _validateName(user.name, function (err, result) {
+                if(err) {
+                    next(err);
+                } else {
+                    if(!result) 
+                        next(null);
+                    else 
+                        next('用户名已经存在');
+                }
             });
         },
         function (next) {
@@ -105,6 +125,17 @@ function _validateMail (mail, callback) {
     com.db.user.findOne({mail: mail}, function (err, user) {
         callback(err, user ? true : false);
     });
+}
+
+/**
+ * 验证昵称
+ * @param {*} name 
+ * @param {*} callback true 存在 false 不存在
+ */
+function _validateName (name, callback) {
+    com.db.user.findOne({name: name}, function (err, user) {
+        callback(err, user ? true : false);
+    })
 }
 
 /**
