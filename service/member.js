@@ -85,9 +85,11 @@ exports.register = function (user, callback) {
                 if(err)
                     next(err);
                 else {
+                    user._id = com.env.guid();
                     user.id = id;
                     user.regdate = new Date();
                     user.state = -1;
+                    delete user.pwd2;
                     next(null);
                 }
             });
