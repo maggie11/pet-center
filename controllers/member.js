@@ -61,5 +61,23 @@ exports.register = function (req, res, next) {
  * 重置密码
  */
 exports.reset = function (req, res, next) {
+    var mail = req.param('mail');
+    var code = req.param('code');
+    var pwd = req.param('pwd');
+    var pwd2 = req.param('pwd2');
+    var user = {};
+    user.mail = mail;
+    user.pwd = pwd;
+    user.pwd2 = pwd2;
+    user.code = code;
+    member_biz.reset(user, function (err) {
+        res.json({err: err});
+    });
+}
 
+/**
+ * 发送验证码邮件
+ */
+exports.sendEmailToValidate = function (req, res, next) {
+    
 }

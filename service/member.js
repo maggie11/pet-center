@@ -108,12 +108,59 @@ exports.register = function (user, callback) {
 }
 
 /**
- * 发送激活邮件
+ * 发送验证码邮件
  * @param {*} mail 
  * @param {*} callback 
  */
 exports.sendEmailToValidate = function (mail, callback) {
     
+}
+
+exports.reset = function (user, callback) {
+    async.waterfall([
+        function (next) {
+            if(user.mail && user.code && user.pwd && user.pwd2) {
+                if(user.pwd === user.pwd2) {
+                    next(null);
+                } else {
+                    next('两次密码输入不一致');
+                }
+            } else {
+                next('参数错误');
+            }
+        },
+        function (next) {
+            _validateMail(user.mail, function (err, result) {
+                if(err) {
+                    next(err);
+                } else {
+                    if(result)
+                        next(null);
+                    else
+                        next('邮箱还未注册');
+                }
+            });
+        },
+        function (next) {
+            var code_in_session = req.session("code");
+            if(user.code === code_in_session) {
+                next(null);
+            } else {
+                next('验证码错误');
+            }
+        }, 
+        function (next) {
+            com.db.user.update({mail: mail}, {$set: {pwd: md5(user.pwd + user.mail).substring(10, 30)}}, function (err, count) {
+                if(!err && count > 0) {
+                    next(null);
+                } else {
+                    next('重置密码失败');
+                }
+            });
+        }
+    ], function (err) {
+        callback(err);
+    });
 }
 
 /**
