@@ -1,1 +1,23 @@
-登录
+<%include ../part/header.ejs%>
+<body>
+    邮箱：<input type="text" id="mail"/>
+    <br>
+    密码：<input type="password" id="pwd"/>
+    <button onclick="login.login()">登录</button>
+</body>
+<script>
+    var login = {};
+    login.login = function () {
+        var mail = $('#mail').val(),
+            pwd = $('#pwd').val(),
+            r = 
+        $.post('/member/login', {mail: mail, pwd: pwd}, function (res) {
+            if(res.err) {
+                alert(res.err);
+            } else {
+                window.location.href = '<%com.env.hostname%>' + r;
+            }
+        });
+    }
+</script>
+</html>

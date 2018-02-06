@@ -17,11 +17,11 @@ exports.login = function (mail, pwd, callback) {
         pwd = md5(pwd + mail).substring(10, 30);
         com.db.user.findOne({mail: mail, pwd: pwd}, function (err, user) {
             if (!err && user) {
-                if(user.state == -1) {
+                /*if(user.state == -1) {
                     callback('账号还未激活', null);
-                } else {
+                } else {*/
                     callback(null, user);
-                }
+                //}
             } else 
                 callback(err || '账号或密码错误', null);
         })

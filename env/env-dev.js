@@ -7,6 +7,7 @@
         mongo_conn_counts: 1,
         mongo_conn: 'mongodb://localhost:27017/pet',
         hostname: 'http://localhost:3000',
+        cdn_url: "",
         guid: function(){return new Date().getTime().toString()+Math.abs((((1+Math.random())*0x10000)|0)).toString();}
     }
 })();

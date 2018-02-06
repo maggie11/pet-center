@@ -6,6 +6,7 @@ require('./env/env-' + env);
 
 var express = require('express');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 var path = require('path');
 
@@ -14,7 +15,10 @@ var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-console.log(com.env.mongo_conn);
+app.use(session({
+    secret: 'AH^%^2DKJS(*P',
+    cookie: {maxAge: 60 * 1000 * 30}
+}));
 
 //加载数据集合
 require('./global/db');
@@ -24,7 +28,7 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
 //加载静态
-app.use(express.static(path.dirname(__dirname) + '/static'));
+app.use(express.static('static'));
 
 //加载控制器
 require('./lib/boot')(app, { verbose: !module.parent });

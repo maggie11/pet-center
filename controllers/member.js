@@ -1,6 +1,6 @@
 var member_biz = require('../service/member');
 var sessionFilter = require('../filters/session-filter');
-//exports.before = [sessionFilter.getUser];
+exports.before = [sessionFilter.getUser];
 
 exports.views = {
     'register': function (req, res, next) {
@@ -11,7 +11,7 @@ exports.views = {
         if(!user) {
             res.render('login');
         } else {
-            res.redirect('');
+            res.redirect('/info/account');
         }
     },
     'reset': function (req, res, next) {

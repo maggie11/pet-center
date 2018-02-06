@@ -18,3 +18,15 @@ exports.getUser = function (req, res, next) {
         next();
     }
 }
+
+/**
+ * 过滤器: 验证登录
+ */
+exports.auth = function (req, res, next) {
+    var user = res.locals.user;
+    if(user) {
+        next();
+    } else {
+        res.redirect('/member/login?r=' + req.originalUrl);
+    }
+}
