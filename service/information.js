@@ -52,7 +52,7 @@ exports.saveInformation = function (information, callback) {
  * @param {*} callback 
  */
 exports.updateInformation = function (id, callback) {
-    com.db.information.update({_id: id}, {$set: {reg: new Date()}}, function (err, count) {
+    com.db.information.update({_id: id}, {$set: {regdate: new Date()}}, function (err, count) {
         if(!err && count > 0) {
             callback(null);
         } else {
