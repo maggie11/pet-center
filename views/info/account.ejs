@@ -1,12 +1,16 @@
 <%include ../part/header.ejs%>
 <body>
+    <%include ../part/title.ejs%>
     你好，<%=user.name%>
+    <br>
+    <a href="/information/add">我要发布</a>
     <br>
     <a href="/info/myreleased">我发布的</a>
     <br>
     <a href="/info/myconcerned">我关注的</a>
+    <%include ../part/bottom.ejs%>
 </body>
 <script>
-
+    $('#title').html('个人中心');
 </script>
 </html>

@@ -1,8 +1,17 @@
 <%include ../part/header.ejs%>
 <body>
-    我关注的
+    <%include ../part/title.ejs%>
+    <br>
+    <%if (err || list.length == 0) {%>
+        <%=(err ? err : '空空如也')%>
+    <%} else {%>
+        <%for(var i = 0; i < list.length; i ++) {%>
+            <%=list[i]._id%>
+        <%}%>
+    <%}%>
+    <%include ../part/bottom.ejs%>
 </body>
 <script>
-
+    $('#title').html('我关注的');
 </script>
 </html>

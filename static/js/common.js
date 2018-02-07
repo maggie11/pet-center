@@ -1,3 +1,6 @@
+//项目全局变量
+var PET = {};
+
 /**
  * 获取url参数
  * @param {*} name 

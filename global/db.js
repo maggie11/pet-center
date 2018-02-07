@@ -21,6 +21,7 @@
         message: 'message', //短信信息集合
         information: 'information', //发布信息集合
         comment: 'comment', //评论集合
+        mark: 'mark', //关注信息集合
         //city: 'city', //城市信息集合
         //area: 'area', //区县信息集合
         //part: 'part', //区域信息集合

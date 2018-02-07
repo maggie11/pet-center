@@ -1,0 +1,39 @@
+<%include ../part/header.ejs%>
+<body>
+    <%include ../part/title.ejs%>
+    标题：<input type="text" id="info_title"/>
+    <br>
+    描述：<input type="text" id="info_content"/>
+    <br>
+    图片：<input type="text" id="info_images"/>
+    <br>
+    位置：<input type="text" id="info_local"/>
+    <br>
+    类别：<input type="text" id="info_type"/>
+    <br>
+    <button onclick="PET.release()">确认发布</button>
+</body>
+<script>
+    $('#title').html('发布');
+    PET.release = function () {
+        var title = $('#info_title').val(),
+            content = $('#info_content').val(),
+            images = $('#info_images').val(),
+            local = $('#info_local').val(),
+            type = $('#info_type').val();
+        $.post('/information/saveInformation', {
+            title: title,
+            content: content,
+            images: images,
+            local: local,
+            type: type
+        }, function (dta) {
+            if(dta.err) {
+                alert(dta.err);
+            } else {
+                window.location.href = '<%=com.env.hostname%>/info/myreleased';
+            }
+        });
+    }
+</script>
+</html>
