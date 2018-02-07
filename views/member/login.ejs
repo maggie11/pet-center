@@ -9,13 +9,12 @@
     var login = {};
     login.login = function () {
         var mail = $('#mail').val(),
-            pwd = $('#pwd').val(),
-            r = 
+            pwd = $('#pwd').val();
         $.post('/member/login', {mail: mail, pwd: pwd}, function (res) {
             if(res.err) {
                 alert(res.err);
             } else {
-                window.location.href = '<%com.env.hostname%>' + r;
+                window.location.reload();
             }
         });
     }

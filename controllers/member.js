@@ -8,10 +8,15 @@ exports.views = {
     },
     'login': function (req, res, next) {
         var user = res.locals.user;
+        var r = req.param('r');
         if(!user) {
             res.render('login');
         } else {
-            res.redirect('/info/account');
+            if(r) {
+                res.redirect(r);
+            } else {
+                res.redirect('/info/account');
+            }
         }
     },
     'reset': function (req, res, next) {
