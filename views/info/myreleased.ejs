@@ -6,7 +6,20 @@
         <%=(err ? err : '空空如也')%>
     <%} else {%>
         <%for (var i = 0; i < list.length; i ++) {%>
-            <%=list[i]._id%>
+            <table>
+                <tr>
+                    <td rowspan="3"><img src="" alt="缩略图"/>&nbsp;</td>
+                    <td colspan="2"><%=list[i].title%></td>
+                </tr>
+                <tr>
+                    <td>留言.数量</td>
+                    <td>浏览.数量</td>
+                </tr>
+                <tr>
+                    <td colspan="2">擦亮 编辑 删除</td>
+                </tr>
+            </table>
+            <br>
         <%}%>
     <%}%>
     <%include ../part/bottom.ejs%>
