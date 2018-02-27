@@ -15,7 +15,7 @@ exports.views = {
     },
     'myreleased': function (req, res, next) {
         var user = res.locals.user;
-        information_biz.getInformationsList({author: user.id}, 1, 10, function (err, arr) {
+        information_biz.getInformationsList({author: user.id, state: 0}, 1, 10, function (err, arr) {
             res.render('myreleased', {err: err, list: arr});
         });
     }

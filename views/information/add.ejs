@@ -1,27 +1,30 @@
 <%include ../part/header.ejs%>
 <body>
     <%include ../part/title.ejs%>
-    标题：<input type="text" id="info_title"/>
+    <input type="hidden" id="info_id" value="<%=(information && information._id ? information._id : '')%>"/>
+    标题：<input type="text" id="info_title" value="<%=(information && information.title ? information.title : '')%>"/>
     <br>
-    描述：<input type="text" id="info_content"/>
+    描述：<input type="text" id="info_content" value="<%=(information && information.content ? information.content : '')%>"/>
     <br>
-    图片：<input type="text" id="info_images"/>
+    图片：<input type="text" id="info_images" value="<%=(information && information.images ? information.images : '')%>"/>
     <br>
-    位置：<input type="text" id="info_local"/>
+    位置：<input type="text" id="info_local" value="<%=(information && information.local ? information.local : '')%>"/>
     <br>
-    类别：<input type="text" id="info_type"/>
+    类别：<input type="text" id="info_type" value="<%=(information && information.type ? information.type : '')%>"/>
     <br>
     <button onclick="PET.release()">确认发布</button>
 </body>
 <script>
     $('#title').html('发布');
     PET.release = function () {
-        var title = $('#info_title').val(),
+        var _id = $('#info_id').val(),
+            title = $('#info_title').val(),
             content = $('#info_content').val(),
             images = $('#info_images').val(),
             local = $('#info_local').val(),
             type = $('#info_type').val();
         $.post('/information/saveInformation', {
+            _id: _id,
             title: title,
             content: content,
             images: images,
