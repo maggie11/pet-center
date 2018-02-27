@@ -44,7 +44,15 @@ exports.views = {
             }
             res.redirect('/info/myreleased');
         });
-    }]
+    }],
+
+    //详情页
+    'detail': function (req, res, next) {
+        var id = req.param('id');
+        information_biz.getInformationsDetail(id, function (err, row) {
+            res.render('detail', {information: row});
+        });
+    }
 }
 
 /**

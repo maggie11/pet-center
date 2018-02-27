@@ -1,7 +1,31 @@
 <%include ../part/header.ejs%>
 <body>
     <%include ../part/title.ejs%>
-    首页
+    <div class="main-local">
+        杭州
+    </div>
+    <div class="main-list">
+        <%for(var i = 0; i < list.length; i ++) {%>
+        <a href="/information/detail?id=<%=list[i]._id%>">
+            <div class="main-item">
+                <div class="author">
+                    <img src=""/> <%=list[i].author%>
+                </div>
+                <div class="pics">
+                    <img/>图1
+                    <img/>图2
+                    <img/>图3
+                </div>
+                <div class="content">
+                    <%=list[i].content%>
+                </div>
+                <div class="locals">
+                    来自 <%=list[i].local%>
+                </div>
+            </div>
+        </a>
+        <%}%>
+    </div>
     <%include ../part/bottom.ejs%>
 </body>
 <script>
